@@ -1,12 +1,28 @@
 <resources>
-    <string name="app_name">Architectural Patterns</string>
 
-    <string name="filter_all_tasks">All</string>
-    <string name="filter_active">Active</string>
-    <string name="filter_completed">Completed</string>
+    <string name="app_name">Task Tracker</string>
+
+    <string name="title_edit_task">Edit task</string>
+    <string name="title_add_task">A new task</string>
+    <string name="title_tasks">Task Tracker</string>
+
+    <string name="label_all_tasks">All tasks</string>
+    <string name="label_active_tasks">Active tasks</string>
+    <string name="label_completed_tasks">Completed tasks</string>
 
     <string name="hint_title">Title</string>
     <string name="hint_desc">Description</string>
 
-    <string name="delete_action">Delete</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_all_tasks">All</string>
+    <string name="action_active">Active</string>
+    <string name="action_completed">Completed</string>
+
+    <string name="message_task_added">The task has been added</string>
+    <string name="message_task_updated">The task has been updated</string>
+    <string name="message_task_deleted">The task has been deleted</string>
+
+    <string name="error_title_empty">"The title cannot be empty"</string>
+
 </resources>

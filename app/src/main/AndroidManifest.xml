@@ -8,13 +8,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TasksListActivity">
+
+        <activity
+            android:name=".controllers.TasksListActivity"
+            android:label="@string/title_tasks"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".controllers.EditTaskActivity"
+            android:label="@string/title_edit_task" />
+
+        <activity
+            android:name=".controllers.AddTaskActivity"
+            android:label="@string/title_add_task" />
 
     </application>
 
