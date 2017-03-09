@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import static com.example.architecturalpatterns.models.TasksDbHelper.TasksTable.*;
 

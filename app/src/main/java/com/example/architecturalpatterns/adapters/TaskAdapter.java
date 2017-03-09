@@ -42,9 +42,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.tasks = tasks;
     }
 
-    public void replaceDataSet(List<Task> newTaskList) {
-        tasks.clear();
-        tasks.addAll(newTaskList);
+    public void replaceDataSet(List<Task> newTasks) {
+        tasks = newTasks;
         notifyDataSetChanged();
     }
 
