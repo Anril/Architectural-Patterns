@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.controllers;
+package com.example.architecturalpatterns.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +13,18 @@ import android.widget.Toast;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
+import com.example.architecturalpatterns.contracts.AddTaskContract;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
+import com.example.architecturalpatterns.presenters.AddTaskPresenter;
 
-public class AddTaskActivity extends AppCompatActivity {
+public class AddTaskActivity extends AppCompatActivity implements AddTaskContract.View {
 
     private static final String TAG = AddTaskActivity.class.getSimpleName();
 
     private TaskRepository taskRepo = Injection.provideTaskRepository(this);
+
+    private AddTaskContract.Presenter presenter = new AddTaskPresenter(this, taskRepo);
 
     private TextInputEditText taskTitleEditText;
     private TextInputEditText taskDescEditText;
@@ -31,7 +35,7 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.act_add_task);
 
         ActionBar actionBar = getSupportActionBar();
-        if( actionBar!= null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -39,27 +43,9 @@ public class AddTaskActivity extends AppCompatActivity {
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (taskTitleEditText.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(),
-                            getResources().getString(R.string.error_title_empty),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Task newTask = new Task();
-                newTask.setTitle(taskTitleEditText.getText().toString());
-                newTask.setDesc(taskDescEditText.getText().toString());
-
-                long answer = taskRepo.insertTask(newTask);
-
-                if (answer != -1) {
-                    Toast.makeText(getApplicationContext(),
-                            getResources().getString(R.string.message_task_added),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                Intent intent = new Intent(getApplicationContext(), TasksListActivity.class);
-                startActivity(intent);
+                String title = taskTitleEditText.getText().toString();
+                String desc = taskDescEditText.getText().toString();
+                presenter.addTask(title, desc);
             }
         });
 
@@ -70,10 +56,30 @@ public class AddTaskActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(getApplicationContext(), TasksListActivity.class);
-            startActivity(intent);
+            presenter.goToTaskListActivity();
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void goToTaskListActivity() {
+        Intent intent = new Intent(getApplicationContext(), TasksListActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showMessageTitleEmpty() {
+        Toast.makeText(getApplicationContext(),
+                getResources().getString(R.string.error_title_empty),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessageTaskAdded() {
+        Toast.makeText(getApplicationContext(),
+                getResources().getString(R.string.message_task_added),
+                Toast.LENGTH_SHORT).show();
+    }
+
 }
 

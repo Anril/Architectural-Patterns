@@ -1,14 +1,16 @@
-package com.example.architecturalpatterns.controllers;
+package com.example.architecturalpatterns.views;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.example.architecturalpatterns.R;
 
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.internal.runners.JUnit38ClassRunner;
+import org.junit.runner.RunWith;
 
 import java.util.UUID;
 
@@ -22,6 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+@RunWith(AndroidJUnit4.class)
 public class CrudOperationsTest {
 
     private final String uniqueTitle = UUID.randomUUID().toString();
@@ -32,7 +35,7 @@ public class CrudOperationsTest {
             new ActivityTestRule<>(TasksListActivity.class);
 
     @Test
-    public void addTaskTest() {
+    public void addTask() {
         addTask(uniqueTitle, uniqueDesc);
 
         onView(allOf(withId(R.id.tv_task_title), withText(uniqueTitle)))
@@ -44,7 +47,7 @@ public class CrudOperationsTest {
     }
 
     @Test
-    public void editTaskTest() {
+    public void editTask() {
         addTask(uniqueTitle, uniqueDesc);
 
         onView(withText(uniqueTitle)).perform(click());
@@ -67,7 +70,7 @@ public class CrudOperationsTest {
     }
 
     @Test
-    public void deleteTaskTest() {
+    public void deleteTask() {
         addTask(uniqueTitle, uniqueDesc);
 
         deleteTask(uniqueTitle, uniqueDesc);

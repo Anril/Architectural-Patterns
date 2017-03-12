@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.controllers;
+package com.example.architecturalpatterns.views;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
+import com.example.architecturalpatterns.contracts.TasksListContract;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
 
@@ -22,6 +23,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private static final String TAG = TaskAdapter.class.getSimpleName();
 
     private List<Task> tasks;
+
+    private TasksListContract.Presenter presenter;
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,8 +41,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
-    public TaskAdapter(List<Task> tasks) {
+    public TaskAdapter(List<Task> tasks, TasksListContract.Presenter presenter) {
         this.tasks = tasks;
+        this.presenter = presenter;
     }
 
     public void replaceDataSet(List<Task> newTasks) {
@@ -71,9 +75,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EditTaskActivity.class);
-                intent.putExtra("id", tasks.get(position).getId());
-                v.getContext().startActivity(intent);
+                presenter.goToEditTaskActivity(tasks.get(position).getId());
             }
         });
 
@@ -81,10 +83,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TaskRepository taskRepo = Injection.provideTaskRepository(buttonView.getContext());
-                Task editedTask = tasks.get(position);
-                editedTask.setCompleted(!editedTask.isCompleted());
-                taskRepo.updateTask(editedTask.getId(), editedTask);
+                presenter.changeTaskState(tasks.get(position).getId(),
+                        !tasks.get(position).isCompleted() );
             }
         });
     }

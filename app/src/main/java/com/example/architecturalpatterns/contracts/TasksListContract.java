@@ -1,0 +1,38 @@
+package com.example.architecturalpatterns.contracts;
+
+import com.example.architecturalpatterns.models.Task;
+import com.example.architecturalpatterns.views.TaskFilterType;
+
+import java.util.List;
+
+/**
+ * Created by Anril on 12.03.2017.
+ */
+
+public interface TasksListContract {
+
+    interface Presenter {
+        void setFilterType(TaskFilterType filterType);
+        TaskFilterType getFilterType();
+
+        void displayAllTasks();
+        void displayActiveTasks();
+        void displayCompetedTasks();
+
+        void refreshTaskList();
+
+        void changeTaskState(long id ,boolean completed);
+
+        void goToAddTaskActivity();
+        void goToEditTaskActivity(long editTaskId);
+    }
+
+    interface View {
+        void displayTasks(List<Task> tasks);
+
+        void changeFilterTypeLabel(TaskFilterType filterType);
+
+        void goToAddTaskActivity();
+        void goToEditTaskActivity(long editTaskId);
+    }
+}
