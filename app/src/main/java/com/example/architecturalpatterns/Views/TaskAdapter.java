@@ -1,6 +1,5 @@
 package com.example.architecturalpatterns.views;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.contracts.TasksListContract;
 import com.example.architecturalpatterns.models.Task;
-import com.example.architecturalpatterns.models.TaskRepository;
 
 import java.util.List;
 
