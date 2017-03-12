@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.contracts.AddTaskContract;
-import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
 import com.example.architecturalpatterns.presenters.AddTaskPresenter;
 

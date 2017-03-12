@@ -5,10 +5,6 @@ import com.example.architecturalpatterns.views.TaskFilterType;
 
 import java.util.List;
 
-/**
- * Created by Anril on 12.03.2017.
- */
-
 public interface TasksListContract {
 
     interface Presenter {

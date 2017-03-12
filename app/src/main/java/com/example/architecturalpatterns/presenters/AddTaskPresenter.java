@@ -1,7 +1,6 @@
 package com.example.architecturalpatterns.presenters;
 
 import com.example.architecturalpatterns.contracts.AddTaskContract;
-import com.example.architecturalpatterns.contracts.TasksListContract;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
 
