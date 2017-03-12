@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.views;
+package com.example.architecturalpatterns.view;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
@@ -9,7 +9,6 @@ import com.example.architecturalpatterns.R;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.runner.RunWith;
 
 import java.util.UUID;

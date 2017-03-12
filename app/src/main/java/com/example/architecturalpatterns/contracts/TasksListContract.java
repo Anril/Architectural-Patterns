@@ -1,7 +1,7 @@
 package com.example.architecturalpatterns.contracts;
 
 import com.example.architecturalpatterns.models.Task;
-import com.example.architecturalpatterns.views.TaskFilterType;
+import com.example.architecturalpatterns.view.TaskFilterType;
 
 import java.util.List;
 

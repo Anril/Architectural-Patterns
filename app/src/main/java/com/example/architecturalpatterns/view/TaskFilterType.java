@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.views;
+package com.example.architecturalpatterns.view;
 
 public enum TaskFilterType {
     ALL_TASKS,
