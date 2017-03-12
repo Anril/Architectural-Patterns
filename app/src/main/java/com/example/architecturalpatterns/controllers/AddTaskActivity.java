@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
@@ -19,7 +20,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private static final String TAG = AddTaskActivity.class.getSimpleName();
 
-    private TaskRepository taskRepo = TaskRepository.getInstance(this);
+    private TaskRepository taskRepo = Injection.provideTaskRepository(this);
 
     private TextInputEditText taskTitleEditText;
     private TextInputEditText taskDescEditText;
