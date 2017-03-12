@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
@@ -24,7 +25,7 @@ public class EditTaskActivity extends AppCompatActivity{
     private TextInputEditText taskTitleEditText;
     private TextInputEditText taskDescEditText;
 
-    private TaskRepository taskRepo = TaskRepository.getInstance(this);
+    private TaskRepository taskRepo = Injection.provideTaskRepository(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

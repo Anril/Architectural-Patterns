@@ -9,7 +9,7 @@ public class TasksDbHelper extends SQLiteOpenHelper {
     private static final String TAG = TasksDbHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "tasks.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     abstract class TasksTable {
         static final String TABLE_NAME = "tasks";
@@ -21,6 +21,11 @@ public class TasksDbHelper extends SQLiteOpenHelper {
 
     public TasksDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Deprecated
+    public TasksDbHelper(Context context, String databaseName){
+        super(context, databaseName, null, DATABASE_VERSION);
     }
 
     @Override

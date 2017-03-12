@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
-import com.example.architecturalpatterns.adapters.TaskAdapter;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
 
@@ -34,7 +34,7 @@ public class TasksListActivity extends AppCompatActivity {
 
     private FilterType curFilter = FilterType.ALL_TASKS;
 
-    private TaskRepository taskRepo = TaskRepository.getInstance(this);
+    private TaskRepository taskRepo = Injection.provideTaskRepository(this);
     private TaskAdapter taskAdapter = new TaskAdapter(new ArrayList<Task>());
 
     private TextView filteringLabelTextView;
@@ -61,20 +61,19 @@ public class TasksListActivity extends AppCompatActivity {
         taskListRecView.setLayoutManager(layoutManager);
         taskListRecView.setAdapter(taskAdapter);
 
-        final SwipeRefreshLayout swiper = (SwipeRefreshLayout)
+        final SwipeRefreshLayout refresher = (SwipeRefreshLayout)
                 findViewById(R.id.swipe_refresh_layout);
-        swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 displayTasks(curFilter);
-                swiper.setRefreshing(false);
+                refresher.setRefreshing(false);
             }
         });
 
         if (savedInstanceState != null) {
             curFilter = (FilterType) savedInstanceState.getSerializable(FILTER_KEY);
         }
-        displayTasks(curFilter);
     }
 
     @Override

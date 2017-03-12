@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.adapters;
+package com.example.architecturalpatterns.controllers;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
-import com.example.architecturalpatterns.controllers.EditTaskActivity;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
 
@@ -81,7 +81,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TaskRepository taskRepo = TaskRepository.getInstance(buttonView.getContext());
+                TaskRepository taskRepo = Injection.provideTaskRepository(buttonView.getContext());
                 Task editedTask = tasks.get(position);
                 editedTask.setCompleted(!editedTask.isCompleted());
                 taskRepo.updateTask(editedTask.getId(), editedTask);

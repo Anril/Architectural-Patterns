@@ -18,18 +18,18 @@ public class TaskRepository {
 
     private static TaskRepository INSTANCE = null;
 
-    private TasksDbHelper dbOpenHelper;
+    private TasksDbHelper dbHelper;
 
-    private TaskRepository(Context context) {
+    public TaskRepository(Context context) {
 
-        this.dbOpenHelper = new TasksDbHelper(context);
+        this.dbHelper = new TasksDbHelper(context);
     }
 
     public static TaskRepository getInstance(Context context) {
-        if (INSTANCE != null) {
-            return INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new TaskRepository(context);
         }
-        return new TaskRepository(context);
+        return INSTANCE;
     }
 
     @Nullable
@@ -64,7 +64,7 @@ public class TaskRepository {
         long rowId = 0;
         SQLiteDatabase db = null;
         try {
-            db = dbOpenHelper.getWritableDatabase();
+            db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_TITLE, task.getTitle());
             values.put(COLUMN_DESCRIPTION, task.getDesc());
@@ -86,7 +86,7 @@ public class TaskRepository {
         int countAffectedRows = 0;
         SQLiteDatabase db = null;
         try {
-            db = dbOpenHelper.getWritableDatabase();
+            db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_TITLE, task.getTitle());
             values.put(COLUMN_DESCRIPTION, task.getDesc());
@@ -109,7 +109,7 @@ public class TaskRepository {
         int countDeletedRows = 0;
         SQLiteDatabase db = null;
         try {
-            db = dbOpenHelper.getWritableDatabase();
+            db = dbHelper.getWritableDatabase();
             countDeletedRows = db.delete(TABLE_NAME, COLUMN_ID + "=?",
                     new String[]{String.valueOf(id)});
         } finally {
@@ -142,7 +142,7 @@ public class TaskRepository {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         try {
-            db = dbOpenHelper.getReadableDatabase();
+            db = dbHelper.getReadableDatabase();
 
             cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
