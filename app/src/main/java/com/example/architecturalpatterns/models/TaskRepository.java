@@ -32,6 +32,10 @@ public class TaskRepository {
         return INSTANCE;
     }
 
+    public static void destroyInstance() {
+        INSTANCE = null;
+    }
+
     @Nullable
     public Task getTaskById(long id) {
         List<Task> tasks = null;
