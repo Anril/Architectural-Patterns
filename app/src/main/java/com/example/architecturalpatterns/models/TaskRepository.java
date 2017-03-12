@@ -16,7 +16,7 @@ public class TaskRepository {
 
     private static final String TAG = TaskRepository.class.getSimpleName();
 
-    private static TaskRepository INSTANCE = null;
+    private static TaskRepository INSTANCE;
 
     private TasksDbHelper dbHelper;
 

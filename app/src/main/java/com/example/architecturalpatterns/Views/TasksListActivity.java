@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.controllers;
+package com.example.architecturalpatterns.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,26 +16,24 @@ import android.widget.TextView;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
+import com.example.architecturalpatterns.contracts.TasksListContract;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
+import com.example.architecturalpatterns.presenters.TasksListPresenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TasksListActivity extends AppCompatActivity {
+public class TasksListActivity extends AppCompatActivity implements TasksListContract.View {
 
     private static final String TAG = TasksListActivity.class.getSimpleName();
     private static final String FILTER_KEY = "FILTER";
 
-    private enum FilterType {
-        ALL_TASKS,
-        ACTIVE_TASKS,
-        COMPLETED_TASKS;
-    }
-
-    private FilterType curFilter = FilterType.ALL_TASKS;
-
     private TaskRepository taskRepo = Injection.provideTaskRepository(this);
-    private TaskAdapter taskAdapter = new TaskAdapter(new ArrayList<Task>());
+
+    private TasksListContract.Presenter presenter = new TasksListPresenter(this, taskRepo);
+
+    private TaskAdapter taskAdapter = new TaskAdapter(new ArrayList<Task>(), presenter);
 
     private TextView filteringLabelTextView;
 
@@ -48,8 +46,7 @@ public class TasksListActivity extends AppCompatActivity {
         addTaskFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddTaskActivity.class);
-                startActivity(intent);
+                presenter.goToAddTaskActivity();
             }
         });
 
@@ -66,20 +63,30 @@ public class TasksListActivity extends AppCompatActivity {
         refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                displayTasks(curFilter);
+                presenter.refreshTaskList();
                 refresher.setRefreshing(false);
             }
         });
 
         if (savedInstanceState != null) {
-            curFilter = (FilterType) savedInstanceState.getSerializable(FILTER_KEY);
+            presenter.setFilterType((TaskFilterType) savedInstanceState.getSerializable(FILTER_KEY));
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        displayTasks(curFilter);
+        switch (presenter.getFilterType()) {
+            case ALL_TASKS:
+                presenter.displayAllTasks();
+                break;
+            case ACTIVE_TASKS:
+                presenter.displayActiveTasks();
+                break;
+            case COMPLETED_TASKS:
+                presenter.displayCompetedTasks();
+                break;
+        }
     }
 
     @Override
@@ -99,13 +106,13 @@ public class TasksListActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.menu_all:
-                            displayTasks(FilterType.ALL_TASKS);
+                            presenter.displayAllTasks();
                             break;
                         case R.id.menu_active:
-                            displayTasks(FilterType.ACTIVE_TASKS);
+                            presenter.displayActiveTasks();
                             break;
                         case R.id.menu_completed:
-                            displayTasks(FilterType.COMPLETED_TASKS);
+                            presenter.displayCompetedTasks();
                             break;
                     }
                     return true;
@@ -119,26 +126,40 @@ public class TasksListActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(FILTER_KEY, curFilter);
+        outState.putSerializable(FILTER_KEY, presenter.getFilterType());
     }
 
-    private void displayTasks(FilterType filter) {
-        switch (filter) {
+
+    @Override
+    public void displayTasks(List<Task> tasks) {
+        taskAdapter.replaceDataSet(tasks);
+    }
+
+    @Override
+    public void changeFilterTypeLabel(TaskFilterType filterType) {
+        switch (filterType) {
             case ALL_TASKS:
-                taskAdapter.replaceDataSet(taskRepo.getAllTasks());
-                curFilter = FilterType.ALL_TASKS;
                 filteringLabelTextView.setText(R.string.label_all_tasks);
                 break;
             case ACTIVE_TASKS:
-                taskAdapter.replaceDataSet(taskRepo.getActiveTasks());
-                curFilter = FilterType.ACTIVE_TASKS;
                 filteringLabelTextView.setText(R.string.label_active_tasks);
                 break;
             case COMPLETED_TASKS:
-                taskAdapter.replaceDataSet(taskRepo.getCompletedTasks());
-                curFilter = FilterType.COMPLETED_TASKS;
                 filteringLabelTextView.setText(R.string.label_completed_tasks);
                 break;
         }
+    }
+
+    @Override
+    public void goToAddTaskActivity() {
+        Intent intent = new Intent(getApplicationContext(), AddTaskActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToEditTaskActivity(long editTaskId) {
+        Intent intent = new Intent(getApplicationContext(), EditTaskActivity.class);
+        intent.putExtra("id", editTaskId);
+        startActivity(intent);
     }
 }
