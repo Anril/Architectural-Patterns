@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.view;
+package com.example.architecturalpatterns.views;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;

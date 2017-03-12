@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.view;
+package com.example.architecturalpatterns.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

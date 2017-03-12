@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.view;
+package com.example.architecturalpatterns.views;
 
 import android.content.Intent;
 import android.os.Bundle;

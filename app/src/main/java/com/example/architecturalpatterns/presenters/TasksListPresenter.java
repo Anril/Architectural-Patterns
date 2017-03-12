@@ -1,6 +1,6 @@
 package com.example.architecturalpatterns.presenters;
 
-import com.example.architecturalpatterns.view.TaskFilterType;
+import com.example.architecturalpatterns.views.TaskFilterType;
 import com.example.architecturalpatterns.contracts.TasksListContract;
 import com.example.architecturalpatterns.models.Task;
 import com.example.architecturalpatterns.models.TaskRepository;
