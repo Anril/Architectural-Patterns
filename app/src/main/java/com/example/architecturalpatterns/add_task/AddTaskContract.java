@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.contracts;
+package com.example.architecturalpatterns.add_task;
 
 public interface AddTaskContract {
 

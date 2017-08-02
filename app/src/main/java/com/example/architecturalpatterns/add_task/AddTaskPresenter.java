@@ -1,8 +1,7 @@
-package com.example.architecturalpatterns.presenters;
+package com.example.architecturalpatterns.add_task;
 
-import com.example.architecturalpatterns.contracts.AddTaskContract;
-import com.example.architecturalpatterns.models.Task;
-import com.example.architecturalpatterns.models.TaskRepository;
+import com.example.architecturalpatterns.data.Task;
+import com.example.architecturalpatterns.sources.TaskRepository;
 
 public class AddTaskPresenter implements AddTaskContract.Presenter {
 

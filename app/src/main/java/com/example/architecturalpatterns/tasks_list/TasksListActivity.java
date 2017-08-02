@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.views;
+package com.example.architecturalpatterns.tasks_list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
-import com.example.architecturalpatterns.contracts.TasksListContract;
-import com.example.architecturalpatterns.models.Task;
-import com.example.architecturalpatterns.models.TaskRepository;
-import com.example.architecturalpatterns.presenters.TasksListPresenter;
+import com.example.architecturalpatterns.add_task.AddTaskActivity;
+import com.example.architecturalpatterns.edit_task.EditTaskActivity;
+import com.example.architecturalpatterns.data.Task;
+import com.example.architecturalpatterns.sources.TaskRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import java.util.List;
 public class TasksListActivity extends AppCompatActivity implements TasksListContract.View {
 
     private static final String TAG = TasksListActivity.class.getSimpleName();
+
     private static final String FILTER_KEY = "FILTER";
 
     private TaskRepository taskRepo = Injection.provideTaskRepository(this);

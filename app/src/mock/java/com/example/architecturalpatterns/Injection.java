@@ -3,7 +3,7 @@ package com.example.architecturalpatterns;
 import android.content.Context;
 
 import com.example.architecturalpatterns.models.FakeTaskRepository;
-import com.example.architecturalpatterns.models.TaskRepository;
+import com.example.architecturalpatterns.sources.TaskRepository;
 
 public final class Injection {
 

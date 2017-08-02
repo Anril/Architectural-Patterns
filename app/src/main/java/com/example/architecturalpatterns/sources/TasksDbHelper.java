@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.models;
+package com.example.architecturalpatterns.sources;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

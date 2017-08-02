@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".views.TasksListActivity"
+            android:name=".tasks_list.TasksListActivity"
             android:label="@string/title_tasks"
             android:launchMode="singleTask">
             <intent-filter>
@@ -20,11 +20,11 @@
         </activity>
 
         <activity
-            android:name=".views.EditTaskActivity"
+            android:name=".edit_task.EditTaskActivity"
             android:label="@string/title_edit_task" />
 
         <activity
-            android:name=".views.AddTaskActivity"
+            android:name=".add_task.AddTaskActivity"
             android:label="@string/title_add_task" />
 
     </application>

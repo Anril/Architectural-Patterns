@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.example.architecturalpatterns.R;
+import com.example.architecturalpatterns.tasks_list.TasksListActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

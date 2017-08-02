@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.contracts;
+package com.example.architecturalpatterns.edit_task;
 
 public interface EditTaskContract {
 

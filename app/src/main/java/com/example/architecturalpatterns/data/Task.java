@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.models;
+package com.example.architecturalpatterns.data;
 
 public class Task {
 

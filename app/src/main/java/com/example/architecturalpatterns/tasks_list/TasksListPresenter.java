@@ -1,9 +1,7 @@
-package com.example.architecturalpatterns.presenters;
+package com.example.architecturalpatterns.tasks_list;
 
-import com.example.architecturalpatterns.views.TaskFilterType;
-import com.example.architecturalpatterns.contracts.TasksListContract;
-import com.example.architecturalpatterns.models.Task;
-import com.example.architecturalpatterns.models.TaskRepository;
+import com.example.architecturalpatterns.data.Task;
+import com.example.architecturalpatterns.sources.TaskRepository;
 
 import java.util.List;
 

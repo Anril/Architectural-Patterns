@@ -1,13 +1,12 @@
 package com.example.architecturalpatterns.models;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.support.annotation.Nullable;
 
-import static com.example.architecturalpatterns.models.TasksDbHelper.TasksTable.*;
+import com.example.architecturalpatterns.data.Task;
+import com.example.architecturalpatterns.sources.TaskRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

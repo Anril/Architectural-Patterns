@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.views;
+package com.example.architecturalpatterns.tasks_list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.architecturalpatterns.R;
-import com.example.architecturalpatterns.contracts.TasksListContract;
-import com.example.architecturalpatterns.models.Task;
+import com.example.architecturalpatterns.data.Task;
 
 import java.util.List;
 

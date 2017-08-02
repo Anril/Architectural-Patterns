@@ -1,4 +1,4 @@
-package com.example.architecturalpatterns.views;
+package com.example.architecturalpatterns.add_task;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,8 @@ import android.widget.Toast;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
-import com.example.architecturalpatterns.contracts.AddTaskContract;
-import com.example.architecturalpatterns.models.TaskRepository;
-import com.example.architecturalpatterns.presenters.AddTaskPresenter;
+import com.example.architecturalpatterns.sources.TaskRepository;
+import com.example.architecturalpatterns.tasks_list.TasksListActivity;
 
 public class AddTaskActivity extends AppCompatActivity implements AddTaskContract.View {
 
