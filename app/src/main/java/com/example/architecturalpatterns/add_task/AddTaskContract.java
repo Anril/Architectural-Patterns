@@ -5,13 +5,14 @@ public interface AddTaskContract {
     interface Presenter {
         void addTask(String title, String desc);
 
-        void goToTaskListActivity();
+        void backButtonClicked();
     }
 
     interface View {
-        void goToTaskListActivity();
+        void goToBack();
 
         void showMessageTitleEmpty();
+
         void showMessageTaskAdded();
     }
 }

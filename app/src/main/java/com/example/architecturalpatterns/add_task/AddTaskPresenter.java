@@ -20,16 +20,16 @@ public class AddTaskPresenter implements AddTaskContract.Presenter {
             view.showMessageTitleEmpty();
             return;
         }
-        Task newTask = new Task(0,title, desc, false);
+        Task newTask = new Task(0, title, desc, false);
 
         if (taskRepo.insertTask(newTask) != -1) {
             view.showMessageTaskAdded();
-            view.goToTaskListActivity();
+            view.goToBack();
         }
     }
 
     @Override
-    public void goToTaskListActivity() {
-        view.goToTaskListActivity();
+    public void backButtonClicked() {
+        view.goToBack();
     }
 }

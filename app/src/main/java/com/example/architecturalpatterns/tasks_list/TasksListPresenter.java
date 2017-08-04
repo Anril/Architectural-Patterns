@@ -1,8 +1,10 @@
 package com.example.architecturalpatterns.tasks_list;
 
+import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.data.Task;
 import com.example.architecturalpatterns.sources.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TasksListPresenter implements TasksListContract.Presenter {
@@ -18,70 +20,75 @@ public class TasksListPresenter implements TasksListContract.Presenter {
         this.taskRepo = taskRepo;
     }
 
-    @Override
-    public void setFilterType(TaskFilterType filterType) {
+    public TasksListPresenter(TasksListContract.View view, TaskRepository taskRepo,
+                              TaskFilterType filterType) {
+        this(view, taskRepo);
         this.filterType = filterType;
-    }
-
-    public TaskFilterType getFilterType() {
-        return filterType;
+        view.setFilterTypeLabel(getFilterLabelResId(filterType));
     }
 
     @Override
-    public void displayAllTasks() {
-        filterType = TaskFilterType.ALL_TASKS;
-        List<Task> tasks = taskRepo.getAllTasks();
-        view.changeFilterTypeLabel(TaskFilterType.ALL_TASKS);
-        view.displayTasks(tasks);
+    public void onResume() {
+        view.showTasks(loadTasks(filterType));
     }
 
     @Override
-    public void displayActiveTasks() {
-        filterType = TaskFilterType.ACTIVE_TASKS;
-        List<Task> tasks = taskRepo.getActiveTasks();
-        view.changeFilterTypeLabel(TaskFilterType.ACTIVE_TASKS);
-        view.displayTasks(tasks);
+    public void onTaskFilterTypeClicked(TaskFilterType filterType) {
+        this.filterType = filterType;
+        view.showTasks(loadTasks(filterType));
+        view.setFilterTypeLabel(getFilterLabelResId(filterType));
     }
 
     @Override
-    public void displayCompetedTasks() {
-        filterType = TaskFilterType.COMPLETED_TASKS;
-        List<Task> tasks = taskRepo.getCompletedTasks();
-        view.changeFilterTypeLabel(TaskFilterType.COMPLETED_TASKS);
-        view.displayTasks(tasks);
+    public void onSwipeRefreshLayout() {
+        view.showTasks(loadTasks(filterType));
     }
 
     @Override
-    public void refreshTaskList() {
-        switch (filterType) {
-            case ALL_TASKS:
-                view.displayTasks(taskRepo.getAllTasks());
-                break;
-            case ACTIVE_TASKS:
-                view.displayTasks(taskRepo.getActiveTasks());
-                break;
-            case COMPLETED_TASKS:
-                view.displayTasks(taskRepo.getCompletedTasks());
-                break;
-        }
-    }
-
-    @Override
-    public void changeTaskState(long id, boolean completed) {
-        Task editedTask = taskRepo.getTaskById(id);
+    public void onTaskStateChanged(long taskId, boolean newState) {
+        Task editedTask = taskRepo.getTaskById(taskId);
         if (editedTask != null) {
-            editedTask.setCompleted(completed);
-            taskRepo.updateTask(id, editedTask);
+            editedTask.setCompleted(newState);
+            taskRepo.updateTask(taskId, editedTask);
         }
     }
 
     @Override
-    public void goToAddTaskActivity() {
+    public void onAddTaskFabClicked() {
         view.goToAddTaskActivity();
     }
 
     @Override
-    public void goToEditTaskActivity(long editTaskId) {
-        view.goToEditTaskActivity(editTaskId);
+    public void onTaskItemClicked(long editableTaskId) {
+        view.goToEditTaskActivity(editableTaskId);
+    }
+
+    @Override
+    public TaskFilterType getTaskFilterType() {
+        return filterType;
+    }
+
+    private int getFilterLabelResId(TaskFilterType filterType) {
+        switch (filterType) {
+            case ALL_TASKS:
+                return R.string.label_all_tasks;
+            case ACTIVE_TASKS:
+                return R.string.label_active_tasks;
+            case COMPLETED_TASKS:
+                return R.string.label_completed_tasks;
+        }
+        return 0;
+    }
+
+    private List<Task> loadTasks(TaskFilterType filterType) {
+        switch (filterType) {
+            case ALL_TASKS:
+                return taskRepo.getAllTasks();
+            case ACTIVE_TASKS:
+                return taskRepo.getActiveTasks();
+            case COMPLETED_TASKS:
+                return taskRepo.getCompletedTasks();
+        }
+        return new ArrayList<>();
     }
 }

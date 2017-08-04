@@ -28,7 +28,7 @@ public class EditTaskPresenter implements EditTaskContract.Presenter {
         if (taskRepo.updateTask(id, newTask)) {
             view.showMessageTaskUpdated();
         }
-        view.goToTaskListActivity();
+        view.goToBack();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class EditTaskPresenter implements EditTaskContract.Presenter {
         if (taskRepo.removeTask(id)) {
             view.showMessageTaskDeleted();
         }
-        view.goToTaskListActivity();
+        view.goToBack();
     }
 
     @Override
@@ -45,11 +45,11 @@ public class EditTaskPresenter implements EditTaskContract.Presenter {
         if (editableTask == null) {
             return;
         }
-        view.displayEditableTask(editableTask.getTitle(), editableTask.getDesc());
+        view.showEditableTask(editableTask.getTitle(), editableTask.getDesc());
     }
 
     @Override
-    public void goToTaskListActivity() {
-        view.goToTaskListActivity();
+    public void backButtonClicked() {
+        view.goToBack();
     }
 }

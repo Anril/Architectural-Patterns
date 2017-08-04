@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+def versionMajor = 1
+def versionMinor = 1
+def versionPatch = 1
+def versionBuild = 0// bump for dogfood builds, public betas, etc.
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
@@ -7,15 +12,27 @@ android {
         applicationId "com.example.architecturalpatterns"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles fileTree(include: ['*.pro'], dir: 'proguard').asList().toArray()
+        }
+
+        debug {
+            minifyEnabled false
+            debuggable true
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles fileTree(include: ['*.pro'], dir: 'proguard').asList().toArray()
         }
     }
 
@@ -35,6 +52,23 @@ android {
             variant.setIgnore(true);
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def formatedDate = new Date().format('dd.MM.yyyy')
+            def fullName = output.outputFile.name
+            def projectName = fullName.substring(0, fullName.indexOf('-'))
+            output.outputFile = new File(
+                    (String) output.outputFile.parent,
+                    (String) output.outputFile.name.replace(projectName,
+                    "arch-patterns-${formatedDate}-v${defaultConfig.versionName}")
+            )
+        }
+    }
+
+    lintOptions {
+
+    }
 }
 
 dependencies {
@@ -44,6 +78,11 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
+    def butterKnifeVersion = '8.7.0'
+    compile "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+
+    def supportVersion = '25.3.0'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
 }

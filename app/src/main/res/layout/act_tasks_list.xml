@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,33 +17,31 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_filtering_label"
+                android:id="@+id/tv_filter_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/filtering_header_margin"
-                android:layout_marginRight="@dimen/filtering_header_margin"
+                android:layout_marginLeft="@dimen/base_8dp_margin"
+                android:layout_marginRight="@dimen/base_8dp_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/action_all_tasks"
+                android:text="@string/label_all_tasks"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/task_list"
+                android:id="@+id/rv_task_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_task" />
         </LinearLayout>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/base_16dp_margin"
         android:src="@drawable/ic_add_white_24px"
         app:fabSize="normal"
         app:layout_anchor="@id/swipe_refresh_layout"
         app:layout_anchorGravity="bottom|end" />
-
 </android.support.design.widget.CoordinatorLayout>

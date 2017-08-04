@@ -7,27 +7,30 @@ import java.util.List;
 public interface TasksListContract {
 
     interface Presenter {
-        void setFilterType(TaskFilterType filterType);
-        TaskFilterType getFilterType();
 
-        void displayAllTasks();
-        void displayActiveTasks();
-        void displayCompetedTasks();
+        void onResume();
 
-        void refreshTaskList();
+        void onTaskFilterTypeClicked(TaskFilterType filterType);
 
-        void changeTaskState(long id ,boolean completed);
+        void onSwipeRefreshLayout();
 
-        void goToAddTaskActivity();
-        void goToEditTaskActivity(long editTaskId);
+        void onTaskStateChanged(long taskId, boolean newState);
+
+        void onAddTaskFabClicked();
+
+        void onTaskItemClicked(long editTaskId);
+
+        TaskFilterType getTaskFilterType();
     }
 
     interface View {
-        void displayTasks(List<Task> tasks);
 
-        void changeFilterTypeLabel(TaskFilterType filterType);
+        void showTasks(List<Task> tasks);
+
+        void setFilterTypeLabel(int resId);
 
         void goToAddTaskActivity();
+
         void goToEditTaskActivity(long editTaskId);
     }
 }

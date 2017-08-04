@@ -1,22 +1,22 @@
 package com.example.architecturalpatterns.add_task;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
+import com.example.architecturalpatterns.core.BaseActivity;
 import com.example.architecturalpatterns.sources.TaskRepository;
-import com.example.architecturalpatterns.tasks_list.TasksListActivity;
 
-public class AddTaskActivity extends AppCompatActivity implements AddTaskContract.View {
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class AddTaskActivity extends BaseActivity implements AddTaskContract.View {
 
     private static final String TAG = AddTaskActivity.class.getSimpleName();
 
@@ -24,8 +24,10 @@ public class AddTaskActivity extends AppCompatActivity implements AddTaskContrac
 
     private AddTaskContract.Presenter presenter = new AddTaskPresenter(this, taskRepo);
 
-    private TextInputEditText taskTitleEditText;
-    private TextInputEditText taskDescEditText;
+    @BindView(R.id.et_task_title)
+    TextInputEditText taskTitleEditText;
+    @BindView(R.id.et_task_desc)
+    TextInputEditText taskDescEditText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,48 +38,40 @@ public class AddTaskActivity extends AppCompatActivity implements AddTaskContrac
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        FloatingActionButton doneFab = (FloatingActionButton) findViewById(R.id.fab_done);
-        doneFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = taskTitleEditText.getText().toString();
-                String desc = taskDescEditText.getText().toString();
-                presenter.addTask(title, desc);
-            }
-        });
-
-        taskTitleEditText = (TextInputEditText) findViewById(R.id.et_task_title);
-        taskDescEditText = (TextInputEditText) findViewById(R.id.et_task_desc);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            presenter.goToTaskListActivity();
+            presenter.backButtonClicked();
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void goToTaskListActivity() {
-        Intent intent = new Intent(getApplicationContext(), TasksListActivity.class);
-        startActivity(intent);
+    public void goToBack() {
+        onBackPressed();
     }
 
     @Override
     public void showMessageTitleEmpty() {
-        Toast.makeText(getApplicationContext(),
+        Toast.makeText(this,
                 getResources().getString(R.string.error_title_empty),
                 Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showMessageTaskAdded() {
-        Toast.makeText(getApplicationContext(),
+        Toast.makeText(this,
                 getResources().getString(R.string.message_task_added),
                 Toast.LENGTH_SHORT).show();
     }
 
+    @OnClick(R.id.fab_done)
+    void onDoneFabClick(View view) {
+        String title = taskTitleEditText.getText().toString();
+        String desc = taskDescEditText.getText().toString();
+        presenter.addTask(title, desc);
+    }
 }
 

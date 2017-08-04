@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
 import com.example.architecturalpatterns.data.Task;
+import com.example.architecturalpatterns.sources.TasksDbHelper.TasksTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ public class TaskRepository {
     private TasksDbHelper dbHelper;
 
     public TaskRepository(Context context) {
-
         this.dbHelper = new TasksDbHelper(context);
     }
 
@@ -39,7 +39,7 @@ public class TaskRepository {
     @Nullable
     public Task getTaskById(long id) {
         List<Task> tasks = null;
-        String queryClause = "WHERE " + TasksDbHelper.TasksTable.COLUMN_ID + "=" + String.valueOf(id);
+        String queryClause = "WHERE " + TasksTable.COLUMN_ID + "=" + String.valueOf(id);
         tasks = getTasksWithClause(queryClause);
         if (tasks.size() > 0) {
             return tasks.get(0);
@@ -52,11 +52,11 @@ public class TaskRepository {
     }
 
     public List<Task> getCompletedTasks() {
-        return getTasksWithClause("WHERE " + TasksDbHelper.TasksTable.COLUMN_COMPLETED + "=1");
+        return getTasksWithClause("WHERE " + TasksTable.COLUMN_COMPLETED + "=1");
     }
 
     public List<Task> getActiveTasks() {
-        return getTasksWithClause("WHERE " + TasksDbHelper.TasksTable.COLUMN_COMPLETED + "=0");
+        return getTasksWithClause("WHERE " + TasksTable.COLUMN_COMPLETED + "=0");
     }
 
     /**
@@ -70,10 +70,10 @@ public class TaskRepository {
         try {
             db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(TasksDbHelper.TasksTable.COLUMN_TITLE, task.getTitle());
-            values.put(TasksDbHelper.TasksTable.COLUMN_DESCRIPTION, task.getDesc());
-            values.put(TasksDbHelper.TasksTable.COLUMN_COMPLETED, task.isCompleted() ? 1 : 0);
-            rowId = db.insert(TasksDbHelper.TasksTable.TABLE_NAME, null, values);
+            values.put(TasksTable.COLUMN_TITLE, task.getTitle());
+            values.put(TasksTable.COLUMN_DESCRIPTION, task.getDesc());
+            values.put(TasksTable.COLUMN_COMPLETED, task.isCompleted() ? 1 : 0);
+            rowId = db.insert(TasksTable.TABLE_NAME, null, values);
         } finally {
             try {
                 if (db != null) {
@@ -92,11 +92,11 @@ public class TaskRepository {
         try {
             db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(TasksDbHelper.TasksTable.COLUMN_TITLE, task.getTitle());
-            values.put(TasksDbHelper.TasksTable.COLUMN_DESCRIPTION, task.getDesc());
-            values.put(TasksDbHelper.TasksTable.COLUMN_COMPLETED, task.isCompleted() ? 1 : 0);
-            countAffectedRows = db.update(TasksDbHelper.TasksTable.TABLE_NAME, values,
-                    TasksDbHelper.TasksTable.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+            values.put(TasksTable.COLUMN_TITLE, task.getTitle());
+            values.put(TasksTable.COLUMN_DESCRIPTION, task.getDesc());
+            values.put(TasksTable.COLUMN_COMPLETED, task.isCompleted() ? 1 : 0);
+            countAffectedRows = db.update(TasksTable.TABLE_NAME, values,
+                    TasksTable.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         } finally {
             try {
                 if (db != null) {
@@ -114,7 +114,7 @@ public class TaskRepository {
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getWritableDatabase();
-            countDeletedRows = db.delete(TasksDbHelper.TasksTable.TABLE_NAME, TasksDbHelper.TasksTable.COLUMN_ID + "=?",
+            countDeletedRows = db.delete(TasksTable.TABLE_NAME, TasksTable.COLUMN_ID + "=?",
                     new String[]{String.valueOf(id)});
         } finally {
             try {
@@ -137,7 +137,7 @@ public class TaskRepository {
     private List<Task> getTasksWithClause(@Nullable String clause) {
         List<Task> tasks = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TasksDbHelper.TasksTable.TABLE_NAME;
+        String query = "SELECT * FROM " + TasksTable.TABLE_NAME;
         if (clause != null) {
             query += " " + clause;
         }
@@ -150,16 +150,15 @@ public class TaskRepository {
 
             cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
-                int idIndex = cursor.getColumnIndex(TasksDbHelper.TasksTable.COLUMN_ID);
-                int titleIndex = cursor.getColumnIndex(TasksDbHelper.TasksTable.COLUMN_TITLE);
-                int descIndex = cursor.getColumnIndex(TasksDbHelper.TasksTable.COLUMN_DESCRIPTION);
-                int completedIndex = cursor.getColumnIndex(TasksDbHelper.TasksTable.COLUMN_COMPLETED);
+                int idIndex = cursor.getColumnIndex(TasksTable.COLUMN_ID);
+                int titleIndex = cursor.getColumnIndex(TasksTable.COLUMN_TITLE);
+                int descIndex = cursor.getColumnIndex(TasksTable.COLUMN_DESCRIPTION);
+                int completedIndex = cursor.getColumnIndex(TasksTable.COLUMN_COMPLETED);
                 do {
-                    Task tmpTask = new Task();
-                    tmpTask.setId(cursor.getLong(idIndex));
-                    tmpTask.setTitle(cursor.getString(titleIndex));
-                    tmpTask.setDesc(cursor.getString(descIndex));
-                    tmpTask.setCompleted((cursor.getInt(completedIndex) == 1));
+                    Task tmpTask = new Task(cursor.getLong(idIndex),
+                            cursor.getString(titleIndex),
+                            cursor.getString(descIndex),
+                            cursor.getInt(completedIndex) == 1);
                     tasks.add(tmpTask);
                 } while (cursor.moveToNext());
             }

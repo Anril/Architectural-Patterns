@@ -4,20 +4,23 @@ public interface EditTaskContract {
 
     interface Presenter {
         void editTask(long id, String title, String desc);
+
         void deleteTask(long id);
 
         void loadEditableTask(long id);
 
-        void goToTaskListActivity();
+        void backButtonClicked();
     }
 
     interface View {
-        void displayEditableTask(String title, String desc);
+        void showEditableTask(String title, String desc);
 
-        void goToTaskListActivity();
+        void goToBack();
 
         void showMessageTitleEmpty();
+
         void showMessageTaskUpdated();
+
         void showMessageTaskDeleted();
     }
 }

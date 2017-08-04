@@ -15,9 +15,10 @@ import android.widget.Toast;
 import com.example.architecturalpatterns.Injection;
 import com.example.architecturalpatterns.R;
 import com.example.architecturalpatterns.sources.TaskRepository;
-import com.example.architecturalpatterns.tasks_list.TasksListActivity;
 
-public class EditTaskActivity extends AppCompatActivity implements EditTaskContract.View{
+public class EditTaskActivity extends AppCompatActivity implements EditTaskContract.View {
+
+    public static final String EDITABLE_TASK_ID_KEY = "editable_task_id";
 
     private static final String TAG = EditTaskActivity.class.getSimpleName();
 
@@ -54,7 +55,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskContr
         });
 
         Intent intent = getIntent();
-        editableTaskId = intent.getLongExtra("id", 0);
+        editableTaskId = intent.getLongExtra(EDITABLE_TASK_ID_KEY, 0);
         presenter.loadEditableTask(editableTaskId);
     }
 
@@ -66,39 +67,38 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskContr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_delete:
                 presenter.deleteTask(editableTaskId);
                 break;
             case android.R.id.home:
-                presenter.goToTaskListActivity();
+                presenter.backButtonClicked();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void displayEditableTask(String title, String desc) {
+    public void showEditableTask(String title, String desc) {
         taskTitleEditText.setText(title);
         taskDescEditText.setText(desc);
     }
 
     @Override
-    public void goToTaskListActivity() {
-        Intent intent = new Intent(getApplicationContext(), TasksListActivity.class);
-        startActivity(intent);
+    public void goToBack() {
+        onBackPressed();
     }
 
     @Override
     public void showMessageTitleEmpty() {
-        Toast.makeText(getApplicationContext(),
+        Toast.makeText(this,
                 getResources().getString(R.string.error_title_empty),
                 Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showMessageTaskUpdated() {
-        Toast.makeText(getApplicationContext(),
+        Toast.makeText(this,
                 getResources().getString(R.string.message_task_updated),
                 Toast.LENGTH_SHORT).show();
     }
